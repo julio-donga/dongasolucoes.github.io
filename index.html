@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Donga Soluções</title>
+
+    <!-- Cabeçalho - Adicionando informações -->
+    <meta name="description" content="ASSISTÊNCIA TÉCNICA / VENDA / SOLUÇÕES TECNOLÓGICAS">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        header {
+            background-color: #003366;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+        header img {
+            width: 200px;
+        }
+        nav {
+            background-color: #0055a5;
+            overflow: hidden;
+        }
+        nav a {
+            color: white;
+            padding: 14px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        nav a:hover {
+            background-color: #003366;
+            color: #f4f4f4;
+        }
+        .container {
+            padding: 20px;
+            max-width: 1000px;
+            margin: auto;
+            background-color: white;
+            box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+        }
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        .service-box {
+            background-color: #0055a5;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            border-radius: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: transform 0.3s, background-color 0.3s, color 0.3s;
+        }
+        .service-box:hover {
+            transform: scale(1.05);
+            background-color: #003366;
+            color: #f4f4f4;
+        }
+        .service-info {
+            display: none;
+            background-color: white;
+            padding: 15px;
+            border: 2px solid #0055a5;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+        .contact-form {
+            padding: 20px;
+            border-radius: 10px;
+            background-color: #e6e6e6;
+            margin-top: 20px;
+        }
+        .contact-form input, .contact-form textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: none;
+            border-radius: 5px;
+        }
+        .contact-form button {
+            background-color: #0055a5;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Tela de carregamento com mensagens -->
+    <div id="messageOverlay" style="position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: #003366; color: white; display: flex; justify-content: center; align-items: center; font-size: 2rem; z-index: 9999; flex-direction: column; text-align: center;">
+        <div id="messageText">Bem-vindo à Donga Soluções!</div>
+    </div>
+
+    <header>
+        <img src="logotipo.png" alt="Logotipo Donga Soluções">
+        <h1>Donga Soluções - Comércio e Prestação de Serviços</h1>
+        <!-- Informações adicionais no cabeçalho -->
+        <p>ASSISTÊNCIA TÉCNICA / VENDA / SOLUÇÕES TECNOLÓGICAS</p>
+    </header>
+
+    <!-- Menu de Navegação -->
+    <nav>
+        <a href="#home">Home</a>
+        <a href="#sobre">Sobre</a>
+        <a href="#servicos">Serviços</a>
+        <a href="#contactos">Contactos</a>
+    </nav>
+
+    <!-- Seção Home -->
+    <div class="container" id="home">
+        <h2>Bem-vindo à Donga Soluções</h2>
+        <p>Oferecemos uma gama completa de serviços em TI, com soluções rápidas e eficientes para as suas necessidades tecnológicas.</p>
+    </div>
+
+    <!-- Seção Sobre -->
+    <div class="container" id="sobre">
+        <h2>Sobre Nós</h2>
+        <p>A Donga Soluções foi fundada com o objetivo de fornecer serviços tecnológicos inovadores para empresas e indivíduos. Com uma equipa experiente e qualificada, buscamos sempre a excelência no que fazemos.</p>
+        <h3>Missão</h3>
+        <p>Prover soluções tecnológicas acessíveis, seguras e eficientes, com um atendimento personalizado e de qualidade.</p>
+        <h3>Visão</h3>
+        <p>Ser uma referência no mercado de serviços tecnológicos, reconhecida pela inovação e compromisso com os clientes.</p>
+        <h3>Valores</h3>
+        <ul>
+            <li>Compromisso com a qualidade</li>
+            <li>Inovação contínua</li>
+            <li>Atendimento personalizado</li>
+        </ul>
+    </div>
+
+    <!-- Seção Serviços -->
+    <div class="container" id="servicos">
+        <h2 style="text-align: center;">Serviços Oferecidos</h2>
+        <div class="services-grid" id="servicesGrid"></div>
+        <div id="service-info" class="service-info">
+            <h3 id="service-title"></h3>
+            <p id="service-description"></p>
+        </div>
+
+        <div class="contact-form">
+            <h3>Solicitação de Serviço:</h3>
+            <form id="serviceForm">
+                <input type="text" id="requestNumber" readonly>
+                <input type="text" id="serviceType" readonly>
+                <input type="text" id="name" placeholder="Seu Nome / Nome da Empresa" required>
+                <input type="text" id="contact" placeholder="Seu Contacto" required>
+                <input type="text" id="location" placeholder="Sua Localização" required>
+                <input type="text" id="equipment" placeholder="Tipo de Equipamento" required>
+                <input type="text" id="brand" placeholder="Marca" required>
+                <input type="text" id="model" placeholder="Modelo" required>
+                <textarea id="problem" rows="5" placeholder="Descreva o Problema" required></textarea>
+                <button type="button" onclick="generatePDF()">Gerar e Enviar PDF pelo WhatsApp</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Seção Contactos -->
+    <div class="container" id="contactos">
+        <h2>Contactos</h2>
+        <p>Telefone: 924622244</p>
+        <p>Email: dongasolucoes@gmail.com</p>
+        <p>Endereço: Cuanza Sul - Sumbe, Bairro do Estaleiro</p>
+        <p>Whatsapp: 924622244 / 950760507</p>
+        <p>Redes Sociais: [Facebook] [Instagram] [LinkedIn]</p>
+    </div>
+
+    <footer>
+        <p style="text-align: center;">&copy; 2025 Donga Soluções - Todos os direitos reservados.</p>
+    </footer>
+
+    <script>
+        window.onload = function() {
+            // Verifica se o usuário já viu a mensagem
+            if (!localStorage.getItem('messageSeen')) {
+                const overlay = document.getElementById('messageOverlay');
+                const messageText = document.getElementById('messageText');
+
+                // Primeira mensagem: 2 segundos
+                setTimeout(() => {
+                    messageText.innerText = 'Estamos em Desenvolvimento';
+                }, 2000);
+
+                // Depois de 3 segundos (2 + 1), remover o overlay e mostrar o site
+                setTimeout(() => {
+                    overlay.style.display = 'none';
+                    localStorage.setItem('messageSeen', 'true'); // Marca que a mensagem foi vista
+                }, 3000);
+            } else {
+                // Caso a mensagem já tenha sido vista, remove o overlay imediatamente
+                document.getElementById('messageOverlay').style.display = 'none';
+            }
+        };
+
+        const serviceData = {
+            "Reparação de Computadores e Impressoras": "🔹 Diagnóstico e reparação de falhas em hardware e software.\n🔹 Substituição de peças defeituosas e otimização do desempenho.\n🔹 Manutenção preventiva para prolongar a vida útil dos equipamentos.",
+            "Instalação de BULK INK (Officejet e Deskjet)": "🔹 Sistema de abastecimento contínuo de tinta.\n🔹 Configuração e ajuste para compatibilidade.\n🔹 Impressão de alta qualidade sem trocar cartuchos.",
+            "Instalação de Softwares e Sistemas Operativos": "🔹 Instalação e atualização de sistemas.\n🔹 Softwares para produtividade e segurança.\n🔹 Personalização conforme necessidades.",
+            "Instalação de Softwares de Faturação": "🔹 Sistemas para gestão financeira eficiente.\n🔹 Relatórios, faturas e controle de estoque.\n🔹 Treinamento para uso correto.",
+            "Remoção de Vírus e Otimização de Sistemas": "🔹 Eliminação de malwares e vírus.\n🔹 Otimização para maior velocidade.\n🔹 Instalação de antivírus.",
+            "Configuração de Servidores e Redes de Computadores": "🔹 Planejamento de redes empresariais.\n🔹 Configuração de servidores.\n🔹 Gerenciamento de infraestrutura.",
+            "Backup e Recuperação de Dados": "🔹 Recuperação de arquivos perdidos.\n🔹 Backups automáticos.\n🔹 Segurança e confidencialidade.",
+            "Instalação de Câmeras de Segurança (CCTV)": "🔹 Sistemas de videomonitoramento.\n🔹 Acesso remoto via celular.\n🔹 Controle de acesso.",
+            "Implementação e Gestão de Infraestrutura de TI": "🔹 Redes estruturadas.\n🔹 Gerenciamento de ativos.\n🔹 Suporte e otimização.",
+            "Suporte Técnico para Empresas e Particulares": "🔹 Atendimento especializado.\n🔹 Consultoria técnica.\n🔹 Resolução de problemas.",
+            "Cópias, Impressões e Digitalizações": "🔹 Impressão de alta qualidade.\n🔹 Digitalização e conversão.\n🔹 Cópias rápidas.",
+            "Trabalhos Escolares e Acadêmicos": "🔹 Formatação e impressão de projetos.\n🔹 Digitação e revisão.\n🔹 Consultoria para pesquisas.",
+            "Timbragem de T-Shirts e Brindes Personalizados": "🔹 Camisetas personalizadas.\n🔹 Brindes promocionais.\n🔹 Estampas de alta qualidade."
+        };
+
+        // Preenche a seção de serviços
+        const servicesGrid = document.getElementById('servicesGrid');
+        Object.keys(serviceData).forEach((service, index) => {
+            const serviceBox = document.createElement('div');
+            serviceBox.classList.add('service-box');
+            serviceBox.innerHTML = service;
+            serviceBox.onclick = () => showServiceInfo(service, index + 1);
+            servicesGrid.appendChild(serviceBox);
+        });
+
+        // Mostra as informações detalhadas do serviço e preenche o formulário
+        function showServiceInfo(service, number) {
+            document.getElementById('service-title').innerText = service;
+            document.getElementById('service-description').innerText = serviceData[service];
+            document.getElementById('service-info').style.display = 'block';
+            document.getElementById('serviceType').value = service;
+            document.getElementById('requestNumber').value = `#${number}`;
+        }
+
+        function generatePDF() {
+            const doc = new jsPDF();
+            const form = document.getElementById('serviceForm');
+            const serviceType = form.querySelector('#serviceType').value;
+            const requestNumber = form.querySelector('#requestNumber').value;
+            const name = form.querySelector('#name').value;
+            const contact = form.querySelector('#contact').value;
+            const location = form.querySelector('#location').value;
+            const equipment = form.querySelector('#equipment').value;
+            const brand = form.querySelector('#brand').value;
+            const model = form.querySelector('#model').value;
+            const problem = form.querySelector('#problem').value;
+
+            doc.text('Solicitação de Serviço:', 10, 10);
+            doc.text(`Número de Solicitação: ${requestNumber}`, 10, 20);
+            doc.text(`Tipo de Serviço: ${serviceType}`, 10, 30);
+            doc.text(`Nome/Empresa: ${name}`, 10, 40);
+            doc.text(`Contacto: ${contact}`, 10, 50);
+            doc.text(`Localização: ${location}`, 10, 60);
+            doc.text(`Equipamento: ${equipment}`, 10, 70);
+            doc.text(`Marca: ${brand}`, 10, 80);
+            doc.text(`Modelo: ${model}`, 10, 90);
+            doc.text(`Problema: ${problem}`, 10, 100);
+
+            doc.save('solicitacao-servico.pdf');
+        }
+    </script>
+</body>
+</html>
